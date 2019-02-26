@@ -1,3 +1,77 @@
-<p>
-  home works!
-</p>
+<div class="container">
+ 
+    <div class="navbar navbar-default">
+        <div class="navbar-header">
+            <p class="navbar-brand">Upload images from any car to see the make and the model</p>
+        </div>
+    </div>
+ 
+    <div class="row">
+ 
+        <div class="col-md-3">
+ 
+            <h3>Select files</h3>
+ 
+            <div class="jumbotron" ng2FileDrop [uploader]="uploader" (click)=fileInput.click() style="height: 300px;">
+                Drop or Click to select files
+            <input type="file" #fileInput ng2FileSelect [uploader]="uploader" multiple style="display: none;"/>
+            </div>
+        </div>
+ 
+        <div class="col-md-9" style="margin-bottom: 40px">
+ 
+            <h3>Images</h3>
+            <p>Files length: {{ uploader?.queue?.length }}</p>
+ 
+            <table class="table">
+                <thead>
+                <tr>
+                    <th width="50%">Name</th>
+                    <th>Size</th>
+                    <th>Make</th>
+                    <th>Model</th>
+                    <th>Accuracy</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr *ngFor="let item of uploader.queue">
+                    <td><div class="media-left">
+                        <img src="" imgPreview [image]="item?._file" class="media-object" style="width:200px;height:200px;border:0;"/>
+                    </div>
+                    <div class="media-body">
+                        <p>{{ item?.file?.name }}</p>
+                    </div></td>
+                    <!-- <td><strong>{{ item?.file?.name }}</strong></td> -->
+                    <td>{{ item?.file?.size/1024/1024 | number:'.2' }} MB</td>
+                </tr>
+                </tbody>
+            </table>
+ 
+            <div>
+                <div>
+                    Queue progress:
+                    <div class="progress" style="">
+                        <div class="progress-bar" role="progressbar" [ngStyle]="{ 'width': uploader.progress + '%' }"></div>
+                    </div>
+                </div>
+                <button type="button" class="btn btn-success btn-s"
+                        (click)="uploader.uploadAll()" [disabled]="!uploader.getNotUploadedItems().length">
+                    <span class="glyphicon glyphicon-upload"></span> Classify
+                </button>
+                <button type="button" class="btn btn-warning btn-s"
+                        (click)="uploader.cancelAll()" [disabled]="!uploader.isUploading">
+                    <span class="glyphicon glyphicon-ban-circle"></span> Cancel
+                </button>
+                <button type="button" class="btn btn-danger btn-s"
+                        (click)="uploader.clearQueue()" [disabled]="!uploader.queue.length">
+                    <span class="glyphicon glyphicon-trash"></span> Remove
+                </button>
+            </div>
+ 
+        </div>
+        <div class="row">
+                <h3>Last classification's</h3>
+        </div>
+ 
+    </div>
+</div>
