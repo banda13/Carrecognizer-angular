@@ -1,5 +1,9 @@
 import { Component, OnInit, HostListener, ViewChildren, QueryList, ElementRef } from '@angular/core';
-import { HttpClientModule, HttpClient } from '@angular/common/http';
+import { HttpClientModule, HttpClient, HttpHeaders } from '@angular/common/http';
+import { ToastrService } from 'ngx-toastr';
+
+import {UserService} from '../services/user.service';
+import { User } from '../model/User';
 
 @Component({
   selector: 'app-classifications',
@@ -7,7 +11,7 @@ import { HttpClientModule, HttpClient } from '@angular/common/http';
   styleUrls: ['./classifications.component.css']
 })
 export class ClassificationsComponent implements OnInit {
-@ViewChildren('list') list: QueryList<ElementRef>;
+  @ViewChildren('list') list: QueryList<ElementRef>;
   paginators: Array<any> = [];
   activePage: number = 1;
   firstVisibleIndex: number = 1;
@@ -19,8 +23,8 @@ export class ClassificationsComponent implements OnInit {
   lastPageNumber: number = 1;
   maxVisibleItems: number = 5;
 
-
   totalCount = 0;
+
 
   url: any = 'http://localhost:8000/core/classlist/';
   nextUrl: any = 'http://localhost:8000/core/classlist/';
@@ -32,28 +36,27 @@ export class ClassificationsComponent implements OnInit {
   orderby: any;
   order_val: any;
   filter: any;
-  filter_val : any;
+  filter_val: any;
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private toastr: ToastrService, private userService: UserService) { }
 
   getData(url) {
     return this.http.get(url);
   }
 
-  loadPage(url){
-    if(url.endsWith("/")){
+  loadPage(url) {
+    if (url.endsWith("/")) {
       url += "?";
     }
 
-    if(this.orderby != null && this.order_val != null){
+    if (this.orderby != null && this.order_val != null) {
       url += "&orderby=" + this.orderby + "&order_val=" + this.order_val;
     }
-    if(this.filter != null){
+    if (this.filter != null) {
       url += "&filter=" + this.filter;
     }
     this.getData(url).subscribe((next: any) => {
       let data = next.results;
-      console.log(next);
       this.totalCount = next.count;
       this.lastPageNumber = Math.ceil(this.totalCount / this.maxVisibleItems);
 
@@ -79,6 +82,9 @@ export class ClassificationsComponent implements OnInit {
       if (this.totalCount % this.paginators.length !== 0) {
         this.paginators.push(this.paginators.length + 1);
       }
+    },
+      (err: any) => {
+        this.toastr.error(err.message, "Failed to load data!");
       });
   }
 
@@ -90,10 +96,10 @@ export class ClassificationsComponent implements OnInit {
     this.searchText = this.searchText.trim();
     console.log(this.searchText);
     this.activePage = 1;
-    if(this.searchText !== null && this.searchText !== ''){
+    if (this.searchText !== null && this.searchText !== '') {
       this.filterIt(this.tableData, this.searchText);
     }
-    else{
+    else {
       this.filter = null;
       this.loadPage(this.url);
     }
@@ -101,32 +107,32 @@ export class ClassificationsComponent implements OnInit {
 
   changePage(event: any) {
     this.activePage = event.target.text;
-    this.loadPage(this.url + "?page="+ this.activePage);
+    this.loadPage(this.url + "?page=" + this.activePage);
   }
 
   nextPage() {
     this.activePage += 1;
-    if(this.nextUrl != null){
+    if (this.nextUrl != null) {
       this.loadPage(this.nextUrl);
     }
   }
   previousPage() {
     this.activePage -= 1;
-    if(this.prevUrl != null){
+    if (this.prevUrl != null) {
       this.loadPage(this.prevUrl);
     }
   }
 
   firstPage() {
     this.activePage = 1;
-    if(this.firstUrl != null){
+    if (this.firstUrl != null) {
       this.loadPage(this.firstUrl);
     }
   }
 
   lastPage() {
     this.activePage = this.lastPageNumber;
-    if(this.lastUrl != null){
+    if (this.lastUrl != null) {
       this.loadPage(this.lastUrl);
     }
   }
@@ -139,7 +145,7 @@ export class ClassificationsComponent implements OnInit {
   }
 
   filterIt(arr: any, searchKey: any) {
-    if(searchKey != null && searchKey != ""){
+    if (searchKey != null && searchKey != "") {
       this.filter = searchKey;
       this.loadPage(this.url);
     }

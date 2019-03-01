@@ -1,9 +1,10 @@
 import { Component, EventEmitter, OnInit } from '@angular/core';
 import { FileUploader, FileLikeObject } from 'ng2-file-upload';
 import { ToastrService } from 'ngx-toastr';
+import { CookieService } from 'ngx-cookie-service';
 
 
-const URL = 'https://evening-anchorage-3159.herokuapp.com/api/';
+const URL = 'http://localhost:8000/core/classify/';
 const maxFileSize = 5 * 1024 * 1024;
 const allowedMimeType = 'jpg';
 
@@ -26,6 +27,17 @@ export class HomeComponent implements OnInit {
     //disableMultipart: true,
     maxFileSize: maxFileSize,
     queueLimit: 1,
+    itemAlias: 'carpic',
+    /*headers: [
+      {
+        name:'asd',
+        value: "csrftoken=" + this.cookieService.get('csrftoken')
+      },
+      {
+        name:'asd',
+        value: "hi"
+      }
+    ],*/
     filters: [{
       name: 'imageExtension',
       fn: (item: any): boolean => {
@@ -57,7 +69,7 @@ export class HomeComponent implements OnInit {
     this.toastr.info(file.name);
   }
 
-  constructor(private toastr: ToastrService) {
+  constructor(private toastr: ToastrService, private cookieService: CookieService) {
   }
 
   ngOnInit() {
@@ -82,6 +94,16 @@ export class HomeComponent implements OnInit {
 
       this.toastr.error(description, message);
     }
+
+    this.uploader.onAfterAddingFile = (file) => {
+      console.log("File added");
+      this.uploader.setOptions({headers: [{name: 'withCredentials', value: 'true'}]});
+    }
+
+    this.uploader.onCompleteItem = (item: any, response: any, status: any, headers: any) => {
+      console.log('File uploaded successfully');
+    };
+    
   }
 
 }
