@@ -1,53 +1,52 @@
 <div class="container card card-cascade narrower mt-5">
-    
+
     <!--Card image-->
-  <div class="view view-cascade gradient-card-header purple-gradient narrower py-4 mx-4 mb-3 d-flex justify-content-center align-items-center">
+    <div class="view view-cascade gradient-card-header purple-gradient narrower py-4 mx-4 mb-3 d-flex justify-content-center align-items-center">
 
-    <h4 class="white-text font-weight-bold text-uppercase mb-0">Upload images from any car to see the make and the model</h4>
+        <h4 class="white-text font-weight-bold text-uppercase mb-0">Upload images from any car to see the make and the model</h4>
 
-  </div>
- 
+    </div>
+
     <div class="row">
-        
+
         <div class="col-md-3">
- 
+
             <h3>Select files</h3>
- 
+
             <div class="jumbotron" ng2FileDrop [uploader]="uploader" (click)=fileInput.click() style="height: 300px;">
                 Drop or Click to select files
-            <input type="file" #fileInput ng2FileSelect [uploader]="uploader" multiple style="display: none;"/>
+                <input type="file" #fileInput ng2FileSelect [uploader]="uploader" multiple style="display: none;" />
             </div>
         </div>
- 
+
         <div class="col-md-9" style="margin-bottom: 40px">
- 
+
             <h3>Images</h3>
             <p>Files length: {{ uploader?.queue?.length }}</p>
- 
+
             <table class="table">
                 <thead>
-                <tr>
-                    <th width="50%">Name</th>
-                    <th>Size</th>
-                    <th>Make</th>
-                    <th>Model</th>
-                    <th>Accuracy</th>
-                </tr>
+                    <tr>
+                        <th width="50%">Name</th>
+                        <th>Size</th>
+                    </tr>
                 </thead>
                 <tbody>
-                <tr *ngFor="let item of uploader.queue">
-                    <td><div class="media-left">
-                        <img src="" imgPreview [image]="item?._file" class="media-object" style="width:200px;height:200px;border:0;"/>
-                    </div>
-                    <div class="media-body">
-                        <p>{{ item?.file?.name }}</p>
-                    </div></td>
-                    <!-- <td><strong>{{ item?.file?.name }}</strong></td> -->
-                    <td>{{ item?.file?.size/1024/1024 | number:'.2' }} MB</td>
-                </tr>
+                    <tr *ngFor="let item of uploader.queue">
+                        <td>
+                            <div class="media-left">
+                                <img src="" imgPreview [image]="item?._file" class="media-object" style="width:200px;height:200px;border:0;" />
+                            </div>
+                            <div class="media-body">
+                                <p>{{ item?.file?.name }}</p>
+                            </div>
+                        </td>
+                        <!-- <td><strong>{{ item?.file?.name }}</strong></td> -->
+                        <td>{{ item?.file?.size/1024/1024 | number:'.2' }} MB</td>
+                    </tr>
                 </tbody>
             </table>
- 
+
             <div>
                 <div>
                     Queue progress:
@@ -55,24 +54,60 @@
                         <div class="progress-bar" role="progressbar" [ngStyle]="{ 'width': uploader.progress + '%' }"></div>
                     </div>
                 </div>
-                <button type="button" class="btn btn-success btn-s"
-                        (click)="uploader.uploadAll()" [disabled]="!uploader.getNotUploadedItems().length">
+                <button type="button" class="btn btn-success btn-s" (click)="classify()" [disabled]="!uploader.getNotUploadedItems().length">
                     <span class="glyphicon glyphicon-upload"></span> Classify
                 </button>
-                <button type="button" class="btn btn-warning btn-s"
-                        (click)="uploader.cancelAll()" [disabled]="!uploader.isUploading">
+                <button type="button" class="btn btn-warning btn-s" (click)="uploader.cancelAll()" [disabled]="!uploader.isUploading">
                     <span class="glyphicon glyphicon-ban-circle"></span> Cancel
                 </button>
-                <button type="button" class="btn btn-danger btn-s"
-                        (click)="uploader.clearQueue()" [disabled]="!uploader.queue.length">
+                <button type="button" class="btn btn-danger btn-s" (click)="uploader.clearQueue()" [disabled]="!uploader.queue.length">
                     <span class="glyphicon glyphicon-trash"></span> Remove
                 </button>
             </div>
- 
+
         </div>
-        
     </div>
-    <div class="row">
-        <h3>Last classification's</h3>
-</div>
+    <h3>Last classification's</h3>
+    <div class="row" *ngIf="lastClassification">
+        <div class="col-md-3">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Image</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <div class="media-left">
+                            <img src="" imgPreview [image]="lastFileObject" class="media-object" style="width:200px;height:200px;border:0;" />
+                        </div>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="col-md-9" style="margin-bottom: 40px">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Make</th>
+                        <th>Model</th>
+                        <th>Accuracy</th>
+                    </tr>
+                </thead>
+                <tbody *ngFor="let item of lastClassification._results">
+                    <tr *ngFor="let car of item['_cars']">
+                        <td>
+                            <strong>{{ car.make }}</strong>
+                        </td>
+                        <td>
+                            <strong>{{ car.model }}</strong>
+                        </td>
+                        <td>
+                            <strong>{{ car.accuracy }}</strong>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
 </div>

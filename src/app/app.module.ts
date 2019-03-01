@@ -15,7 +15,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MDBBootstrapModule } from 'angular-bootstrap-md';
 
 import { CookieService } from 'ngx-cookie-service';
-import { UserService } from './services/user.service';    // add this
+import { UserService } from './services/user.service';
+import { ClassificationService } from './services/classification.service';
 
 import { HomeComponent } from './home/home.component';
 import { ClassificationsComponent } from './classifications/classifications.component';
@@ -60,6 +61,7 @@ import { JwtInterceptor } from './interceptors/jwt.interceptor';
   providers: [
     CookieService,
      UserService,
+     ClassificationService,
      { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
      { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true }
     ],

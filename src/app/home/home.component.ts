@@ -3,6 +3,9 @@ import { FileUploader, FileLikeObject } from 'ng2-file-upload';
 import { ToastrService } from 'ngx-toastr';
 import { CookieService } from 'ngx-cookie-service';
 
+import { AuthenticationService } from '../services/authentication.service';
+import { ClassificationService } from '../services/classification.service';
+
 
 const URL = 'http://localhost:8000/core/classify/';
 const maxFileSize = 5 * 1024 * 1024;
@@ -28,16 +31,6 @@ export class HomeComponent implements OnInit {
     maxFileSize: maxFileSize,
     queueLimit: 1,
     itemAlias: 'carpic',
-    /*headers: [
-      {
-        name:'asd',
-        value: "csrftoken=" + this.cookieService.get('csrftoken')
-      },
-      {
-        name:'asd',
-        value: "hi"
-      }
-    ],*/
     filters: [{
       name: 'imageExtension',
       fn: (item: any): boolean => {
@@ -53,6 +46,8 @@ export class HomeComponent implements OnInit {
 
   fileObject: any;
 
+  lastClassification: any;
+  lastFileObject: any;
 
   public fileOverBase(e: any): void {
     this.hasBaseDropZoneOver = e;
@@ -69,7 +64,23 @@ export class HomeComponent implements OnInit {
     this.toastr.info(file.name);
   }
 
-  constructor(private toastr: ToastrService, private cookieService: CookieService) {
+  public classify(){
+    const file: File= this.uploader.queue[0]._file;
+    console.log("Classification started: " + file.name);
+
+    this.classificationService.classify(file).subscribe(result => {
+      this.lastClassification = result;
+      this.toastr.success("Classification was successful!");
+      this.lastFileObject = file;
+      this.uploader.clearQueue();
+    });
+
+  }
+
+  constructor(private toastr: ToastrService,
+     private cookieService: CookieService,
+      private authenticationService: AuthenticationService,
+        private classificationService: ClassificationService) {
   }
 
   ngOnInit() {
