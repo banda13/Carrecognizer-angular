@@ -13,4 +13,8 @@ export class UserService {
     getDetails() {
         return this.http.get<User>(apiUrl + 'users/profile/');
     }
+
+    register(user: User) {
+        return this.http.post(apiUrl + 'users/create/', user);
+    }
 }
