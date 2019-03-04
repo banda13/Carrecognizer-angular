@@ -30,6 +30,8 @@
           <th class="th-lg">Created
             <mdb-icon fas icon="sort" (click)="sortBy('created_at')"></mdb-icon>
           </th>
+          <th class="th-lg">Result
+            </th>
           <th class="th-lg">Image
             <mdb-icon fas icon="sort" (click)="sortBy('image')"></mdb-icon>
           </th>
@@ -42,7 +44,8 @@
         <tr #list *ngFor="let data of search(); let i = index">
           <th scope="row">{{data.id}}</th>
           <td >{{data.created_at}}</td>
-          <td >{{data.image}}</td>
+          <td>{{data.result}}</td>
+          <td ><img src="{{data.image}}" imgPreview [image]="lastFileObject" class="media-object" style="width:200px;height:200px;border:0;" /></td>
         </tr>
       </tbody>
       <!--Table body-->

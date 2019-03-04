@@ -14,12 +14,6 @@ export class ClassificationService {
         let formData: FormData = new FormData();
         formData.append('carpic', f);
 
-        let httpOptions = {
-            headers: new HttpHeaders({
-              'Content-Type': 'multipart/form-data'
-            })
-        };
-
         return this.http.post(apiUrl + 'core/classify/',formData);
     }
 

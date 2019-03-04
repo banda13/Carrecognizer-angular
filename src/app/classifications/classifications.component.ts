@@ -32,6 +32,8 @@ export class ClassificationsComponent implements OnInit {
   firstUrl: any = 'http://localhost:8000/core/classlist/';
   lastUrl: any = 'http://localhost:8000/core/classlist/';
 
+  downloadUrl: any = 'http://localhost:8000/core/file/'
+
 
   orderby: any;
   order_val: any;
@@ -42,6 +44,10 @@ export class ClassificationsComponent implements OnInit {
 
   getData(url) {
     return this.http.get(url);
+  }
+
+  downloadImage(filename){
+    return this.http.get(this.downloadUrl + filename)
   }
 
   loadPage(url) {
@@ -70,7 +76,10 @@ export class ClassificationsComponent implements OnInit {
 
       this.tableData = [];
       data.forEach((element: any) => {
-        this.tableData.push({ id: (element.id).toString(), created_at: element.created_at, image: element.image.file_name });
+        console.log(element);
+        var imageurl = this.downloadUrl + element.creator.username + "/" + element.image.id + "_" + element.image.file_name + "" + element.image.mime_type;
+        var res = JSON.stringify(element._results[0], null, 4);
+        this.tableData.push({ id: (element.id).toString(), created_at: element.created_at, image: imageurl, result: res });
       });
 
       this.paginators = [];

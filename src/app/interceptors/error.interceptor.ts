@@ -2,21 +2,27 @@ import { Injectable } from '@angular/core';
 import { HttpRequest, HttpHandler, HttpEvent, HttpInterceptor } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
+import { Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 
 import { AuthenticationService } from '../services/authentication.service';
 
 @Injectable()
 export class ErrorInterceptor implements HttpInterceptor {
-    constructor(private authenticationService: AuthenticationService) { }
+    constructor(private authenticationService: AuthenticationService, private router: Router,private toastr: ToastrService) { }
 
     intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-        console.log(request);
         return next.handle(request).pipe(catchError(err => {
             if (err.status === 401 && this.authenticationService.currentUserValue != null) {
                 // auto logout if 401 response returned from api
                 this.authenticationService.logout();
-                location.reload(true);
+                this.router.navigate(['/login']);
+                this.toastr.info('Please log in!');
                 //TODO refresh token instead of loggin out user!
+            }
+            else{
+                this.router.navigate(['/login']);
+                this.toastr.info('Please log in!');
             }
 
             const error = err.error.message || err.statusText;
