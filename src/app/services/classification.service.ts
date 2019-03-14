@@ -1,8 +1,7 @@
 import {Injectable} from '@angular/core';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
-import { FILE } from 'dns';
 
-const apiUrl = "http://localhost:8000/";
+const apiUrl = "http://176.63.245.216:1235/";
 
 @Injectable()
 export class ClassificationService {

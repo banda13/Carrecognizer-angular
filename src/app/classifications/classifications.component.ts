@@ -25,14 +25,15 @@ export class ClassificationsComponent implements OnInit {
 
   totalCount = 0;
 
+  //TODO extend the call's into service!
 
-  url: any = 'http://localhost:8000/core/classlist/';
-  nextUrl: any = 'http://localhost:8000/core/classlist/';
-  prevUrl: any = 'http://localhost:8000/core/classlist/';
-  firstUrl: any = 'http://localhost:8000/core/classlist/';
-  lastUrl: any = 'http://localhost:8000/core/classlist/';
+  url: any = 'http://176.63.245.216:1235/core/classlist/';
+  nextUrl: any = 'http://176.63.245.216:1235/core/classlist/';
+  prevUrl: any = 'http://176.63.245.216:1235/core/classlist/';
+  firstUrl: any = 'http://176.63.245.216:1235/core/classlist/';
+  lastUrl: any = 'http://176.63.245.216:1235/core/classlist/';
 
-  downloadUrl: any = 'http://localhost:8000/core/file/'
+  downloadUrl: any = 'http://176.63.245.216:1235/core/file/'
 
 
   orderby: any;
@@ -78,7 +79,8 @@ export class ClassificationsComponent implements OnInit {
       data.forEach((element: any) => {
         console.log(element);
         var imageurl = this.downloadUrl + element.creator.username + "/" + element.image.id + "_" + element.image.file_name + "" + element.image.mime_type;
-        var res = JSON.stringify(element._results[0], null, 4);
+        var res = element._results[0]; //JSON.stringify(element._results[0], null, 4);
+        console.log(typeof res);
         this.tableData.push({ id: (element.id).toString(), created_at: element.created_at, image: imageurl, result: res });
       });
 

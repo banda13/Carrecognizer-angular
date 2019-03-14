@@ -44,7 +44,13 @@
         <tr #list *ngFor="let data of search(); let i = index">
           <th scope="row">{{data.id}}</th>
           <td >{{data.created_at}}</td>
-          <td>{{data.result}}</td>
+          <td *ngIf="data.result">
+              <tr *ngFor="let car of data.result._cars">
+                  <td><b>{{car.make}}</b></td>
+                  <td><b>{{car.model}}</b></td>
+                  <td><b>{{car.accuracy}} %</b></td>
+              </tr>
+          </td>
           <td ><img src="{{data.image}}" imgPreview [image]="lastFileObject" class="media-object" style="width:200px;height:200px;border:0;" /></td>
         </tr>
       </tbody>

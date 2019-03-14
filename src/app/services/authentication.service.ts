@@ -5,7 +5,7 @@ import { map } from 'rxjs/operators';
 
 import { User } from '../model/user';
 
-const apiUrl = "http://localhost:8000"
+const apiUrl = "http://176.63.245.216:1235/"
 
 @Injectable({ providedIn: 'root' })
 export class AuthenticationService {
@@ -28,7 +28,7 @@ export class AuthenticationService {
     }
 
     login(email: string, password: string) {
-        return this.http.post<any>(apiUrl + '/users/login/', {email, password})
+        return this.http.post<any>(apiUrl + 'users/login/', {email, password})
             .pipe(map(user => {
                 // login successful if there's a jwt token in the response
                 if (user && user.token) {
