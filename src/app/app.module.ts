@@ -17,6 +17,7 @@ import { MDBBootstrapModule } from 'angular-bootstrap-md';
 import { CookieService } from 'ngx-cookie-service';
 import { UserService } from './services/user.service';
 import { ClassificationService } from './services/classification.service';
+import { StatService } from './services/stat.service';
 
 import { HomeComponent } from './home/home.component';
 import { ClassificationsComponent } from './classifications/classifications.component';
@@ -29,6 +30,8 @@ import { SignupComponent } from './user/signup/signup.component';
 
 import { ErrorInterceptor } from './interceptors/error.interceptor';
 import { JwtInterceptor } from './interceptors/jwt.interceptor';
+import { AdminComponent } from './admin/admin.component';
+import { ChartsModule } from 'ng2-charts';
 
 @NgModule({
   declarations: [
@@ -41,7 +44,8 @@ import { JwtInterceptor } from './interceptors/jwt.interceptor';
     ImagePreview,
     UserComponent,
     LoginComponent,
-    SignupComponent
+    SignupComponent,
+    AdminComponent
   ],
   imports: [
     BrowserModule,
@@ -62,6 +66,7 @@ import { JwtInterceptor } from './interceptors/jwt.interceptor';
     CookieService,
      UserService,
      ClassificationService,
+     StatService,
      { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
      { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true }
     ],
