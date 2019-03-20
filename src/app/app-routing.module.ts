@@ -7,6 +7,7 @@ import { ClassificationsComponent } from './classifications/classifications.comp
 import { LoginComponent } from './user/login/login.component';
 import { SignupComponent } from './user/signup/signup.component';
 import { UserComponent } from './user//user.component';
+import { AdminComponent } from './admin/admin.component';
 
 const routes: Routes = [
   {
@@ -37,6 +38,10 @@ const routes: Routes = [
     path: 'you',
     component: UserComponent
   },
+  {
+    path: 'admin',
+    component: AdminComponent
+  }
 ];
 
 @NgModule({
