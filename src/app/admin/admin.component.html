@@ -1,16 +1,42 @@
-<table mdbTable>
-  <caption>Authentication activity</caption>
+<div class="container card card-cascade narrower mt-5">
+    <div class="view view-cascade gradient-card-header purple-gradient narrower py-4 mx-4 mb-3 d-flex justify-content-center align-items-center">
+<h4 class="font-weight-bold text-uppercase mb-0">Real times usage</h4>
+</div>
+<div class="px-2">
+<table class="table">
   <thead class="black white-text">
     <tr>
-      <th *ngFor="let head of headElements" scope="col">{{head}} </th>
+      <th class="th-lg" *ngFor="let head of headElements" scope="col">{{head}} </th>
     </tr>
   </thead>
   <tbody>
-    <tr mdbTableCol *ngFor="let el of elements">
-      <th scope="row">{{el.username}}</th>
-      <td>{{el.time}}</td>
-      <td>{{el.method}}</td>
-      <td>{{el.path}}</td>
+    <tr mdbTableCol *ngFor="let el of userInteractions">
+      <th class="col-md-2">{{el.username}}</th>
+      <td class="col-md-2">{{el.time}}</td>
+      <td class="col-md-1">{{el.method}}</td>
+      <td class="col-md-1">{{el.path}}</td>
+    </tr>
+    <tr align="center">
+      <div align="center" class="flex">
+        <div class="flex-item">
+          <div style="display: block;">
+            <canvas baseChart [datasets]="lineChartData"
+             [options]="barChartOptions"
+              [labels]="lineChartLabels"
+              [chartType]="lineChartType"
+               [legend]="barChartLegend"
+                [options]="lineChartOptions"
+                [colors]="lineChartColors"
+                 [plugins]="lineChartPlugins"></canvas>
+          </div>
+        </div>
+        </div>
     </tr>
   </tbody>
 </table>
+</div>
+<div class="view view-cascade gradient-card-header purple-gradient narrower py-4 mx-4 mb-3 d-flex justify-content-center align-items-center">
+    <h4 class="font-weight-bold text-uppercase mb-0">Classifier data</h4>
+</div>
+
+</div>

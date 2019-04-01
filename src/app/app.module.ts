@@ -14,6 +14,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { MDBBootstrapModule } from 'angular-bootstrap-md';
 
+import { ChartsModule } from 'ng2-charts';
+
 import { CookieService } from 'ngx-cookie-service';
 import { UserService } from './services/user.service';
 import { ClassificationService } from './services/classification.service';
@@ -31,7 +33,6 @@ import { SignupComponent } from './user/signup/signup.component';
 import { ErrorInterceptor } from './interceptors/error.interceptor';
 import { JwtInterceptor } from './interceptors/jwt.interceptor';
 import { AdminComponent } from './admin/admin.component';
-import { ChartsModule } from 'ng2-charts';
 
 @NgModule({
   declarations: [
@@ -60,7 +61,8 @@ import { ChartsModule } from 'ng2-charts';
     MDBBootstrapModule.forRoot(),
     FormsModule,
     ReactiveFormsModule,
-    HttpClientModule
+    HttpClientModule,
+    ChartsModule
   ],
   providers: [
     CookieService,

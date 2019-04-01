@@ -15,4 +15,6 @@ call npm install @angular/http --save
 
 call npm install --save ng2-charts
 
+call npm install --save chart.js
+
 echo All packages successfully installed!
