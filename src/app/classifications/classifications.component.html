@@ -45,7 +45,11 @@
           <th scope="row">{{data.id}}</th>
           <td >{{data.created_at}}</td>
           <td *ngIf="data.result">
+<<<<<<< HEAD
               <tr *ngFor="let car of data.result._cars|slice:-5">
+=======
+              <tr *ngFor="let car of data.result._cars|slice:0:5">
+>>>>>>> a54ee8c24c8e730460580680f123e80f256d2fa1
                   <td><b>{{car.make}}</b></td>
                   <td><b>{{car.model}}</b></td>
                   <td><b>{{car.accuracy}} %</b></td>
