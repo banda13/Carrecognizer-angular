@@ -68,11 +68,17 @@ export class HomeComponent implements OnInit {
     const file: File= this.uploader.queue[0]._file;
     console.log("Classification started: " + file.name);
 
-    this.classificationService.classify(file).subscribe(result => {
-      this.lastClassification = result;
+    this.classificationService.classify(file).subscribe(data => {
+      this.lastClassification = data;
       this.toastr.success("Classification was successful!");
       this.lastFileObject = file;
       this.uploader.clearQueue();
+    },
+    error =>{
+      if(error.status !== 401){
+        this.toastr.error(error);
+      }
+      console.log("Unexpected exception while classification");
     });
 
   }

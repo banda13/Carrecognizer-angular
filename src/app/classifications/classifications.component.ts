@@ -95,7 +95,12 @@ export class ClassificationsComponent implements OnInit {
       }
     },
       (err: any) => {
-        this.toastr.error(err.message, "Failed to load data!");
+        if(err.status === 401){
+            console.error("Unauthorized request to classification data");
+        }
+        else{
+          this.toastr.error(err.message, "Failed to load data!");
+        }
       });
   }
 
