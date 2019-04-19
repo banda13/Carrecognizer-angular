@@ -89,21 +89,17 @@
             <table class="table">
                 <thead>
                     <tr>
-                        <th>Make</th>
-                        <th>Model</th>
+                        <th>Name</th>
                         <th>Accuracy</th>
                     </tr>
                 </thead>
-                <tbody *ngFor="let item of lastClassification._results|slice:0:5">
-                    <tr *ngFor="let car of item['_cars']">
+                <tbody *ngFor="let item of lastClassification._results|slice:-5">
+                    <tr *ngFor="let i of item['_items']">
                         <td>
-                            <strong>{{ car.make }}</strong>
+                            <strong>{{ i.name }}</strong>
                         </td>
                         <td>
-                            <strong>{{ car.model }}</strong>
-                        </td>
-                        <td>
-                            <strong>{{ car.accuracy }}</strong>
+                            <strong>{{ i.accuracy }}</strong>
                         </td>
                     </tr>
                 </tbody>
