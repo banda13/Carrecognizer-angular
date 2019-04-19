@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild  } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { StatService } from '../services/stat.service';
 import { ChartDataSets, ChartOptions } from 'chart.js';
 import { Color, BaseChartDirective, Label } from 'ng2-charts';
@@ -14,15 +14,15 @@ const MS_PER_SECOND = 1000;
 })
 export class AdminComponent implements OnInit {
 
-  year : any;
-  month : any;
-  day : any;
+  year: any;
+  month: any;
+  day: any;
   hour: any;
-  minutes : any;
-  seconds : any;
+  minutes: any;
+  seconds: any;
 
   intervalInSecond = 600;
-  interval : any;
+  interval: any;
   refreshIntervalInSecond = 10;
 
   userInteractions: any = [];
@@ -30,7 +30,7 @@ export class AdminComponent implements OnInit {
   public lineChartData: ChartDataSets[] = [
     { data: [0], label: 'Api usage' }
   ];
-  public lineChartLabels: Label[] = ["0","0","0","0","0","0","0","0"];
+  public lineChartLabels: Label[] = ["0", "0", "0", "0", "0", "0", "0", "0"];
   public lineChartType = 'line';
   public barChartOptions: ChartOptions = {
     responsive: true,
@@ -112,9 +112,9 @@ export class AdminComponent implements OnInit {
 
   constructor(private statService: StatService) {
     this.refreshTime();
-   }
+  }
 
-  refreshTime(){
+  refreshTime() {
     let d = new Date();
     var currentdate = new Date(d.valueOf() - this.refreshIntervalInSecond * MS_PER_SECOND);
     this.year = currentdate.getFullYear();
@@ -123,25 +123,25 @@ export class AdminComponent implements OnInit {
     this.hour = currentdate.getHours();
     this.minutes = currentdate.getMinutes();
     this.seconds = currentdate.getSeconds();
-    console.log('Time update: ' + this.year + '-'+ this.month + '-' + this.day + " " + this.hour + ":" + this.minutes + ":" + this.seconds);
+    console.log('Time update: ' + this.year + '-' + this.month + '-' + this.day + " " + this.hour + ":" + this.minutes + ":" + this.seconds);
   }
 
-  refreshChartData(newUsage){
+  refreshChartData(newUsage) {
     console.log(newUsage);
     let oldData = this.lineChartData[0].data;
     let newData = new Array();
-    for(let d of oldData){
+    for (let d of oldData) {
       newData.push(d);
     }
     newData.push(newUsage.length);
     this.lineChartData = new Array(1);
-    this.lineChartData[0] = {data: newData, label: 'Api usage'};
+    this.lineChartData[0] = { data: newData, label: 'Api usage' };
     this.lineChartLabels = new Array(newData.length);
 
     console.log(this.lineChartData[0]);
 
-    for(let d of newUsage){
-      if(d.path.startsWith('/users/')){
+    for (let d of newUsage) {
+      if (d.path.startsWith('/users/')) {
         this.userInteractions.push(d);
       }
     }
@@ -151,34 +151,35 @@ export class AdminComponent implements OnInit {
     this.statService.getApiUsage(this.year, this.month, this.day, this.hour, this.minutes, this.seconds).subscribe(details => {
       this.userInteractions = [];
       this.refreshChartData(details.results);
-        for(let d of details.results){
-          if(d.path != "/stats/usage/" && d.username != ""){
-            this.userInteractions.push(d);
-            if(this.userInteractions.length > 4){
-              this.userInteractions.shift();
-            }
+      for (let d of details.results) {
+        if (d.path != "/stats/usage/" && d.username != "") {
+          this.userInteractions.push(d);
+          if (this.userInteractions.length > 4) {
+            this.userInteractions.shift();
           }
         }
+      }
     });
 
     this.interval = setInterval(() => {
       this.refreshTime();
       this.statService.getApiUsage(this.year, this.month, this.day, this.hour, this.minutes, this.seconds).subscribe(details => {
-          this.refreshChartData(details.results);
-          for(let d of details.results){
-            if(d.path != "/stats/usage/" && d.username != ""){
-              this.userInteractions.push(d);
-              if(this.userInteractions.length > 4){
-                this.userInteractions.shift();
-                console.log(this.userInteractions);
-              }
+        this.refreshChartData(details.results);
+        for (let d of details.results) {
+          if (d.path != "/stats/usage/" && d.username != "") {
+            this.userInteractions.push(d);
+            if (this.userInteractions.length > 4) {
+              this.userInteractions.shift();
+              console.log(this.userInteractions);
             }
           }
-      });
+        }
+      }
+      );
     }, this.refreshIntervalInSecond * MS_PER_SECOND);
   }
   ngOnDestroy() {
     console.log("destroying..");
     clearInterval(this.interval);
- }
+  }
 }
