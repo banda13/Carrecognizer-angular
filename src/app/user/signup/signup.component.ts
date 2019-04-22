@@ -60,8 +60,14 @@ export class SignupComponent implements OnInit {
                   this.router.navigate(['/login']);
               },
               error => {
-                this.toastr.error(error, "Registration failed");
-                  this.loading = false;
+                if(error != null){
+                    this.toastr.error(error, "Registration failed");
+                    this.loading = false;
+                } 
+                else{
+                    this.toastr.error("Unexpected error", "Registration failed");
+                    this.loading = false;
+                }
               });
   }
 

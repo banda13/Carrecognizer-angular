@@ -75,7 +75,10 @@ export class HomeComponent implements OnInit {
       this.uploader.clearQueue();
     },
     error =>{
-      if(error.status !== 401){
+      if(error === undefined){
+        this.toastr.error("Unexpected server error, please try again later");
+      }
+      else if(error.status !== 401){
         this.toastr.error(error);
       }
       console.log("Unexpected exception while classification");
