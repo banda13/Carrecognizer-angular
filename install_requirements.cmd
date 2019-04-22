@@ -17,4 +17,6 @@ call npm install --save ng2-charts
 
 call npm install --save chart.js
 
+call npm install --save-dev @angular-devkit/build-angular
+
 echo All packages successfully installed!
