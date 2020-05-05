@@ -1,8 +1,10 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { StatService } from '../services/stat.service';
+import { ClassificationService } from '../services/classification.service';
 import { ChartDataSets, ChartOptions } from 'chart.js';
 import { Color, BaseChartDirective, Label } from 'ng2-charts';
 import * as pluginAnnotations from 'chartjs-plugin-annotation';
+import { Classifier } from '../model/classifier';
 
 const MS_PER_MINUTE = 60000;
 const MS_PER_SECOND = 1000;
@@ -13,6 +15,9 @@ const MS_PER_SECOND = 1000;
   styleUrls: ['./admin.component.scss']
 })
 export class AdminComponent implements OnInit {
+
+  classfier: Classifier;
+  categories: any;
 
   year: any;
   month: any;
@@ -110,7 +115,7 @@ export class AdminComponent implements OnInit {
 
   @ViewChild(BaseChartDirective) chart: BaseChartDirective;
 
-  constructor(private statService: StatService) {
+  constructor(private statService: StatService, private classService: ClassificationService) {
     this.refreshTime();
   }
 
@@ -177,6 +182,17 @@ export class AdminComponent implements OnInit {
       }
       );
     }, this.refreshIntervalInSecond * MS_PER_SECOND);
+
+
+    this.classService.getActiveClassifier().subscribe(details => {
+      console.log("Classifier loaded");
+      console.log(details);
+      this.classfier = details;
+    });
+
+    this.classService.getCategories().subscribe(categories => {
+      console.log(categories);
+    });
   }
   ngOnDestroy() {
     console.log("destroying..");

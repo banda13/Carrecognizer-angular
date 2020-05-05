@@ -35,8 +35,55 @@
   </tbody>
 </table>
 </div>
-<div class="view view-cascade gradient-card-header purple-gradient narrower py-4 mx-4 mb-3 d-flex justify-content-center align-items-center">
+<div *ngIf="classfier" class="view view-cascade gradient-card-header purple-gradient narrower py-4 mx-4 mb-3 d-flex justify-content-center align-items-center">
     <h4 class="font-weight-bold text-uppercase mb-0">Classifier data</h4>
+</div>
+<div align="center" *ngIf="classfier">
+  <strong>Name: </strong>{{classfier.name}}
+  <br/>
+  <strong>Description: </strong>{{classfier.description}}
+  <br/>
+  <strong>{{classfier.name}} is active from: </strong>{{classfier.active_from}}
+  <br/>
+  <strong>Train size for each category: </strong>{{classfier.train_size}}
+  <br/>
+  <strong>Validation size for each category: </strong>{{classfier.validation_size}}
+  <br/>
+  <strong>Test size for each category: </strong>{{classfier.test_size}}
+  <br/>
+  <strong>Image width: </strong>{{classfier.image_width}}
+  <br/>
+  <strong>Image height: </strong>{{classfier.image_height}}
+  <br/><br/>
+
+  <strong>Transfer training time: </strong>{{classfier.transfer_train_time}} second
+  <br/>
+  <strong>Transfer train accuracy: </strong>{{classfier.transfer_train_accuracy}} %
+  <br/>
+  <strong>Transfer train loss: </strong>{{classfier.transfer_train_loss}}
+  <br/><br/>
+
+  <strong>Fine tunnig time: </strong>{{classfier.fine_tune_time}} second
+  <br/>
+  <strong>Fine tune accuracy: </strong>{{classfier.fine_tune_accuracy}} %
+  <br/>
+  <strong>Fine tune loss: </strong>{{classfier.fine_tune_loss}}
+  <br/><br/>
+
+  <strong>Testing accuracy: </strong>{{classfier.test_accuracy}} %
+  <br/>
+  <strong>Testing time: </strong>{{classfier.test_time}} second
+  <br/>
+  <strong>Top-3 Accuracy: </strong>{{classfier.test_top3_accuracy}} %
+  <br/>
+  <strong>Average Probability: </strong>{{classfier.test_probability}}
+  <br/><br/>
+</div>
+
+<div class="view view-cascade gradient-card-header purple-gradient narrower py-4 mx-4 mb-3 d-flex justify-content-center align-items-center">
+  <h4 class="font-weight-bold text-uppercase mb-0">Category details</h4>
+</div>
+<div align="center">
 </div>
 
 </div>
