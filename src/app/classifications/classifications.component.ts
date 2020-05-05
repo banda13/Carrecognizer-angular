@@ -27,13 +27,13 @@ export class ClassificationsComponent implements OnInit {
 
   //TODO extend the call's into service!
 
-  url: any = 'http://176.63.245.216:1235/core/classlist/';
-  nextUrl: any = 'http://176.63.245.216:1235/core/classlist/';
-  prevUrl: any = 'http://176.63.245.216:1235/core/classlist/';
-  firstUrl: any = 'http://176.63.245.216:1235/core/classlist/';
-  lastUrl: any = 'http://176.63.245.216:1235/core/classlist/';
+  url: any = "http://localhost/core/classlist/";//'http://176.63.245.216:1235/core/classlist/';
+  nextUrl: any = "http://localhost/core/classlist/";// 'http://176.63.245.216:1235/core/classlist/';
+  prevUrl: any = "http://localhost/core/classlist/"; //'http://176.63.245.216:1235/core/classlist/';
+  firstUrl: any = "http://localhost/core/classlist/";//'http://176.63.245.216:1235/core/classlist/';
+  lastUrl: any = "http://localhost/core/classlist/";//'http://176.63.245.216:1235/core/classlist/';
 
-  downloadUrl: any = 'http://176.63.245.216:1235/core/file/'
+  downloadUrl: any = "http://localhost/core/file/"; //'http://176.63.245.216:1235/core/file/'
 
 
   orderby: any;

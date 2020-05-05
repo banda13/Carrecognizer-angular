@@ -5,7 +5,7 @@ import { map, catchError } from 'rxjs/operators';
 
 import { User } from '../model/user';
 
-const apiUrl = "http://176.63.245.216:1235/"
+const apiUrl = "http://localhost/"; //"http://176.63.245.216:1235/"
 
 @Injectable({ providedIn: 'root' })
 export class AuthenticationService {

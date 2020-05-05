@@ -2,7 +2,10 @@ import { Injectable, EventEmitter, Output } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { BehaviorSubject, Observable, Subject, throwError } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
-const apiUrl = "http://176.63.245.216:1235/";
+
+import { Classifier } from '../model/classifier';
+
+const apiUrl = "http://localhost/";// "http://176.63.245.216:1235/";
 
 @Injectable()
 export class ClassificationService {
@@ -33,6 +36,14 @@ export class ClassificationService {
             map(response => {
                 return response;
         }), catchError(this.handleError));
+    }
+
+    getActiveClassifier(){
+        return this.http.get<Classifier>(apiUrl + 'core/classifier/').pipe(catchError(this.handleError)); 
+    }
+
+    getCategories(){
+        return this.http.get<any>(apiUrl + 'core/categories/').pipe(catchError(this.handleError));
     }
 
 }

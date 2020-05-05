@@ -6,7 +6,7 @@ import { map, catchError } from 'rxjs/operators';
 import { User } from '../model/user';
 import { query } from '../../../node_modules/@angular/core/src/render3';
 
-const apiUrl = "http://176.63.245.216:1235/";
+const apiUrl = "http://localhost/"; //"http://176.63.245.216:1235/";
 
 @Injectable()
 export class StatService {
