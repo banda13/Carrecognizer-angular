@@ -5,7 +5,7 @@ import { map, catchError } from 'rxjs/operators';
 
 import { Classifier } from '../model/classifier';
 
-const apiUrl = "http://localhost/";// "http://176.63.245.216:1235/";
+const apiUrl = "http://178.48.246.170:1235/";
 
 @Injectable()
 export class ClassificationService {
