@@ -5,7 +5,7 @@ import { CookieService } from 'ngx-cookie-service';
 
 import { AuthenticationService } from '../services/authentication.service';
 import { ClassificationService } from '../services/classification.service';
-
+import { StatService } from '../services/stat.service';
 
 const URL = 'http://localhost:8000/core/classify/';
 const maxFileSize = 5 * 1024 * 1024;
@@ -64,32 +64,52 @@ export class HomeComponent implements OnInit {
     this.toastr.info(file.name);
   }
 
-  public classify(){
-    const file: File= this.uploader.queue[0]._file;
+  public classify() {
+    const file: File = this.uploader.queue[0]._file;
     console.log("Classification started: " + file.name);
+    this.statService.getAvgClassificationTime().subscribe(resp => {
+      var classTime = resp['avg_class_time'];
+      console.log(classTime);
+      const uploader = this.uploader;
+      uploader.progress = 0;
+      const step = 100 / classTime;
 
-    this.classificationService.classify(file).subscribe(data => {
-      this.lastClassification = data;
-      this.toastr.success("Classification was successful!");
-      this.lastFileObject = file;
-      this.uploader.clearQueue();
-    },
-    error =>{
-      if(error === undefined){
-        this.toastr.error("Unexpected server error, please try again later");
-      }
-      else if(error.status !== 401){
-        this.toastr.error(error);
-      }
-      console.log("Unexpected exception while classification");
+      var downloadTimer = setInterval(function(){
+        if(classTime <= 0){
+          clearInterval(downloadTimer);
+        }
+        uploader.progress += step;
+        classTime -= 1;
+      }, 1000);
+
+      this.toastr.info("Classification started...");
+      this.classificationService.classify(file).subscribe(data => {
+        this.lastClassification = data;
+        this.toastr.success("Classification was successful!");
+        this.lastFileObject = file;
+        this.uploader.clearQueue();
+      },
+        error => {
+          if (error === undefined) {
+            this.toastr.error("Unexpected server error, please try again later");
+          }
+          else if (error.status !== 401) {
+            this.toastr.error(error);
+          }
+          console.log("Unexpected exception while classification");
+        });
+    }, 
+    error => {
+      this.toastr.error("Failed to start progess bar");
+      console.log(error);
     });
-
   }
 
   constructor(private toastr: ToastrService,
-     private cookieService: CookieService,
-      private authenticationService: AuthenticationService,
-        private classificationService: ClassificationService) {
+    private cookieService: CookieService,
+    private authenticationService: AuthenticationService,
+    private classificationService: ClassificationService,
+    private statService: StatService) {
   }
 
   ngOnInit() {
@@ -117,13 +137,13 @@ export class HomeComponent implements OnInit {
 
     this.uploader.onAfterAddingFile = (file) => {
       console.log("File added");
-      this.uploader.setOptions({headers: [{name: 'withCredentials', value: 'true'}]});
+      this.uploader.setOptions({ headers: [{ name: 'withCredentials', value: 'true' }] });
     }
 
     this.uploader.onCompleteItem = (item: any, response: any, status: any, headers: any) => {
       console.log('File uploaded successfully');
     };
-    
+
   }
 
 }

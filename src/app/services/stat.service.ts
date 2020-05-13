@@ -57,4 +57,8 @@ export class StatService {
         }
         return this.http.get<any>(apiUrl + 'stats/usage/' + queryParams).pipe(catchError(this.handleError));
     }
+
+    getAvgClassificationTime(){
+        return this.http.get<any>(apiUrl + 'stats/classification_time/').pipe(catchError(this.handleError));
+    }
 }
