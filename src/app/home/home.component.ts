@@ -88,6 +88,7 @@ export class HomeComponent implements OnInit {
         this.toastr.success("Classification was successful!");
         this.lastFileObject = file;
         this.uploader.clearQueue();
+        this.uploader.progress = 100;
       },
         error => {
           if (error === undefined) {
