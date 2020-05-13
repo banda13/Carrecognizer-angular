@@ -5,6 +5,8 @@ import { User } from '../model/user';
 import { UserService } from '../services/user.service';
 import { AuthenticationService } from '../services/authentication.service';
 
+import { ToastrService } from 'ngx-toastr';
+
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
@@ -13,36 +15,54 @@ import { AuthenticationService } from '../services/authentication.service';
 export class HeaderComponent implements OnInit {
 
   currentUser: User;
-  userDetails : User;
+  userDetails: User;
 
-  constructor(private router: Router,private authService: AuthenticationService, private userService: UserService) {
-    
+  constructor(private router: Router, private authService: AuthenticationService, private userService: UserService, private toastr: ToastrService) {
+
   }
 
   ngOnInit() {
-    this.currentUser = this.authService.currentUserValue;
-    this.authService.getEmitter().subscribe(user => this.currentUser = user);
+    try {
+      this.currentUser = this.authService.currentUserValue;
+      this.authService.getEmitter().subscribe(user => this.currentUser = user);
+    } catch (err) {
+      console.log("Error happend while authentication user: " + err);
+      this.logout();
+    }
   }
 
   hasAdminPermission() {
-      if(this.currentUser != null) {
-        if(this.userDetails != null){
+    try {
+      if (this.currentUser != null) {
+        if (this.userDetails != null) {
           return this.userDetails.is_staff;
         }
-        else{
+        else {
           this.userService.getDetails().subscribe(user => {
+            console.log(user);
             this.userDetails = user;
-            return this.userDetails.is_staff; 
-          });
+            return this.userDetails.is_staff;
+          },
+            error => {
+              console.log("Error happend while authentication user: " + error);
+              this.logout();
+              return false;
+            });
         }
       }
-      else{
+      else {
         return false;
       }
+    } catch (err) {
+      console.log("Error happend while authentication user: " + err);
+      this.logout();
+      return false;
+    }
   }
 
   logout() {
     this.authService.logout();
-    this.router.navigate(['/login']);
-}
+    this.toastr.info("Your logged out!");
+    //this.router.navigate(['/login']);
+  }
 }

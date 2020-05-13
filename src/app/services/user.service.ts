@@ -22,6 +22,9 @@ export class UserService {
             console.error(
                 `Backend returned code ${error.status}, ` +
                 `body was: ${error.error.error}`);
+
+            // log out the user in case of backend error!
+            // remove user from local storage to log user out
         }
         // return an observable with a user-facing error message
         return throwError(error.error.error);
